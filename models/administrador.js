@@ -1,31 +1,18 @@
-module.exports = class Administrador{
-    setNome(_nome){
-        this.nome = _nome
-    }
-    getNome(){
-        return this.nome.toUpperCase()
-    }
+const sequelize = require("../config/sequilize")
 
-    setEmail(_email){
-        this.email = _email
-    }
-    getEmail(){
-        return this.email
-    }
-
-    setSenha(_senha){
-        this.senha = _senha
-    }
-    getSenha(){
-        return this.senha
-    }
-
-    setConfirmacaoSenha(_csenha){
-        this.csenha = _csenha
-    }
-
-    validarSenha(){
-        return this.senha === this.csenha
-    }
-}
+module.exports = sequelize.define('administradores', {
+    Nome: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+    Email: {
+      type: Sequelize.STRING,
+      allowNull: false,
+      unique: true,
+    },
+    Senha: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+});
 
