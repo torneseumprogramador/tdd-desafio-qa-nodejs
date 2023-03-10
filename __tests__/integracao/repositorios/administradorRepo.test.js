@@ -4,74 +4,74 @@ const Administrador = require("../../../models/administrador")
 describe('AdministradorRepo', () => {
   let administradorRepo;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     administradorRepo = new AdministradorRepo();
-    administradorRepo.Truncate();
+    await administradorRepo.Truncate();
   });
 
-  test('salvar os dados no banco', () => {
+  test('salvar os dados no banco', async () => {
     // Arrange
     const email = 'adm@teste.com';
     const adm = criarAdministrador(email);
 
     // Act
-    administradorRepo.Salvar(adm);
-    const admDb = administradorRepo.BuscaPorEmail(email);
+    await administradorRepo.Salvar(adm);
+    const admDb = await administradorRepo.BuscaPorEmail(email);
 
     // Assert
     expect(admDb).toBeDefined();
   });
 
-  test('atualização de dados no banco', () => {
+  test('atualização de dados no banco', async () => {
     // Arrange
     const email = 'adm@teste.com';
     const adm = criarAdministrador(email);
-    administradorRepo.Salvar(adm);
+    await administradorRepo.Salvar(adm);
 
     // Atualiza o nome do Administrador
     adm.Nome = 'adm atualizado';
 
     // Act
-    administradorRepo.Salvar(adm);
-    const admDb = administradorRepo.BuscaPorEmail(email);
+    await administradorRepo.Salvar(adm);
+    const admDb = await administradorRepo.BuscaPorEmail(email);
 
     // Assert
     expect(admDb.Nome).toEqual('adm atualizado');
   });
 
-  test('exclusão de dados no banco', () => {
+  test('exclusão de dados no banco', async () => {
     // Arrange
     const email = 'adm@teste.com';
     const adm = criarAdministrador(email);
-    administradorRepo.Salvar(adm);
+    await administradorRepo.Salvar(adm);
 
     // Act
-    administradorRepo.Excluir(adm);
-    const admDb = administradorRepo.BuscaPorEmail(email);
+    await administradorRepo.Excluir(adm);
+    const admDb = await administradorRepo.BuscaPorEmail(email);
 
     // Assert
     expect(admDb).toBeNull();
   });
 
-  test('busca por objeto inexistente no banco', () => {
+  test('busca por objeto inexistente no banco', async () => {
     // Arrange
     const email = 'emailinexistente@teste.com';
 
     // Act
-    const admDb = administradorRepo.BuscaPorEmail(email);
+    const admDb = await administradorRepo.BuscaPorEmail(email);
 
     // Assert
     expect(admDb).toBeNull();
   });
 
-  test('busca por objeto existente no banco', () => {
+  test('busca por objeto existente no banco', async () => {
     // Arrange
     const email = 'adm@teste.com';
     const adm = criarAdministrador(email);
-    administradorRepo.Salvar(adm);
+    await administradorRepo.Salvar(adm);
 
     // Act
-    const admDb = administradorRepo.BuscaPorEmail(email);
+    const admDb = await administradorRepo.BuscaPorEmail(email);
 
     // Assert
     expect(admDb.Email).toEqual(email);
@@ -79,14 +79,14 @@ describe('AdministradorRepo', () => {
     expect(admDb.Senha).toEqual('teste');
   });
 
-  test('busca por ID existente no banco', () => {
+  test('busca por ID existente no banco', async () => {
     // Arrange
     const email = 'adm@teste.com';
     const adm = criarAdministrador(email);
-    administradorRepo.Salvar(adm);
+    await administradorRepo.Salvar(adm);
 
     // Act
-    const admDb = administradorRepo.BuscaPorId(adm.Id);
+    const admDb = await administradorRepo.BuscaPorEmail(adm.Email);
 
     // Assert
     expect(admDb.Email).toEqual(email);
@@ -94,19 +94,19 @@ describe('AdministradorRepo', () => {
     expect(admDb.Senha).toEqual('teste');
   });
 
-  test('busca por todos os objetos no banco', () => {
+  test('busca por todos os objetos no banco', async () => {
     // Act / Assert
-    expect(administradorRepo.BuscarTodos()).toHaveLength(0);
+    expect(await administradorRepo.BuscarTodos()).toHaveLength(0);
 
     // Arrange
     const adm1 = criarAdministrador('adm1@teste.com');
-    administradorRepo.Salvar(adm1);
+    await administradorRepo.Salvar(adm1);
 
     const adm2 = criarAdministrador('adm2@teste.com');
-    administradorRepo.Salvar(adm2);
+    await administradorRepo.Salvar(adm2);
 
     // Act
-    const admsDb = administradorRepo.BuscarTodos();
+    const admsDb = await administradorRepo.BuscarTodos();
 
     // Assert
     expect(admsDb).toHaveLength(2);
