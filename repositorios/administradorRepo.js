@@ -1,6 +1,6 @@
 const Administrador = require('../models/administrador');
 
-class AdministradorRepo {
+module.exports = class AdministradorRepo {
     async Salvar(adm) {
         await adm.save();
     }
@@ -25,5 +25,3 @@ class AdministradorRepo {
         return await Administrador.findByPk(id);
     }
 }
-
-module.exports = { sequelize, Administrador, AdministradorRepo };

@@ -1,28 +1,48 @@
-const Administrador = require("../../models/administrador")
+const Administrador = require("../../models/administrador");
 
-describe('Administrador model', () => {
-  let administrator
+describe('Administrador', () => {
+  it('Deve ter as propriedades "Nome", "Email" e "Senha"', () => {
+    const admin = Administrador.build({
+      Nome: 'Administrador',
+      Email: 'admin@test.com',
+      Senha: '123456',
+    });
 
-  beforeEach(() => {
-    administrator = new Administrador()
-    console.log(`==========[aqui]===========`)
-  })
+    expect(admin.Nome).toBe('Administrador');
+    expect(admin.Email).toBe('admin@test.com');
+    expect(admin.Senha).toBe('123456');
+  });
 
-  test('should set and get nome', () => {
-    const nome = 'John Doe'
-    administrator.setNome(nome)
-    expect(administrator.getNome()).toBe("JOHN DOE")
-  })
 
-  test('should set and get email', () => {
-    const email = 'johndoe@example.com'
-    administrator.setEmail(email)
-    expect(administrator.getEmail()).toBe(email)
-  })
+  it('A propriedade "Nome" não deve ser nula', async () => {
+    const admin = Administrador.build({
+      Nome: null,
+      Email: 'admin@test.com',
+      Senha: '123456',
+    });
 
-  test('should set and get senha', () => {
-    const senha = 'senha123'
-    administrator.setSenha(senha)
-    expect(administrator.getSenha()).toBe(senha)
-  })
-})
+    await expect(admin.validate()).rejects.toThrow();
+  });
+
+
+  it('A propriedade "Email" não deve ser nula', async () => {
+    const admin = Administrador.build({
+      Nome: 'Administrador',
+      Email: null,
+      Senha: '123456',
+    });
+
+    await expect(admin.validate()).rejects.toThrow();
+  });
+  
+  it('A propriedade "Senha" não deve ser nula', async () => {
+    const admin = Administrador.build({
+      Nome: 'Administrador',
+      Email: 'admin@test.com',
+      Senha: null,
+    });
+
+    await expect(admin.validate()).rejects.toThrow();
+  });
+
+});
