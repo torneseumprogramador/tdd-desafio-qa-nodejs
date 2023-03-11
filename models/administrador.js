@@ -1,5 +1,5 @@
 const { Sequelize } = require('sequelize');
-const sequelizeConfig = require("../config/sequilize")
+const sequelizeConfig = require('../config/sequilize');
 
 module.exports = sequelizeConfig.define('administradores', {
   Nome: {
